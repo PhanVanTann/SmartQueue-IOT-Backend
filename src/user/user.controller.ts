@@ -9,7 +9,7 @@ import { AdminGuard } from '../auth/roles.guard';
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
-   // @UseGuards(AdminGuard)
+  @UseGuards(AdminGuard)
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
     console.log("Creating user:", createUserDto);
@@ -21,7 +21,7 @@ export class UserController {
     return this.userService.findAll();
   }
 
-  @Get(':id')
+  @Get(':id') 
   findOne(@Param('id') id: string) {
     return this.userService.findOne(+id);
   }
