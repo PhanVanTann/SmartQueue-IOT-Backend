@@ -1,4 +1,4 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Put } from '@nestjs/common';
 import { ArduinoService } from './arduino.service';
 
 @Controller('api')
@@ -11,6 +11,11 @@ export class ArduinoController {
 
     this.arduinoService.handleButtonPress(body.status);
 
+    return { ok: true };
+  }
+  @Put('next')
+  callNextQueue(@Body() body: {status: string}) {
+    this.arduinoService.handleButtonPress(body.status);
     return { ok: true };
   }
 }

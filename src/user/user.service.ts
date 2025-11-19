@@ -7,6 +7,7 @@ import { User, UserDocument } from './schemas/user.schema';
 import * as bcrypt from 'bcrypt';
 import { UnauthorizedException } from '@nestjs/common';
 
+
 @Injectable()
 export class UserService {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
@@ -32,9 +33,11 @@ export class UserService {
     return user.save();
   }
 
-  findAll() {
-    return `This action returns all user`;
+  async findAll() {
+    const users = await this.userModel.find({role:'user'}).select('-password'); 
+    return {message:'success','data':users};
   }
+  
 
   findOne(id: number) {
     return `This action returns a #${id} user`;

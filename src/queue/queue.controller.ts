@@ -1,7 +1,8 @@
-import { Body, Controller, Patch, Post ,Put,Param} from '@nestjs/common';
+import { Body, Controller, Patch, Post ,Put,Param, Get} from '@nestjs/common';
 import { QueueService } from './queue.service';
 import { CreateQueueDto } from './dto/create-queue.dto';
 import { UpdateQueueStatusDto } from './dto/update-queue.dto';
+import { CreatenextQueueDto } from './dto/next-queue.dto';
 
 @Controller('queue')
 export class QueueController {
@@ -15,5 +16,13 @@ export class QueueController {
             
         const { status } = updateData;
         return this.queueService.updateQueueStatus(id, status!);
+    }
+    @Post('/next')
+    async callNextQueue() {
+        return this.queueService.callNextNumber();
+    }
+    @Get('/current')
+    async getCurrentQueue() {
+        return this.queueService.getCurrentQueue();
     }
 }

@@ -28,4 +28,60 @@ export class QueueService {
         );
         return { message: 'Queue status updated successfully', queue: updatedQueue};
     }
+    async callNextNumber( ) {
+        await this.queueModel.updateOne(
+            { status: 'calling' },
+            { status: 'done' }
+        );
+
+        // 2. Lấy số tiếp theo trong danh sách chờ
+        const next = await this.queueModel.findOne({ status: 'waiting' }).sort({ number: 1 });
+
+         if (!next) {
+            // Nếu không có số tiếp theo, trả về mặc định
+            return {
+            currentNumber: null,
+            nextNumbers: [],
+            waitingCount: 0
+            };
+        }
+
+
+        // 3. Cập nhật nó thành "calling"
+        next.status = 'calling';
+        await next.save();
+
+         const upcoming = await this.queueModel
+            .find({ status: 'waiting' })
+            .sort({ number: 1 })
+            .limit(5);
+
+        return {
+            currentNumber: next.number,
+            nextNumbers: upcoming.map(x => x.number),
+            waitingCount: await this.queueModel.countDocuments({ status: 'waiting' })
+        };
+    }
+    async getCurrentQueue() {
+        const current = await this.queueModel.findOne({ status: 'calling' }).sort({ number: 1 });
+
+        if (!current) {
+            return {
+                currentNumber: null,
+                nextNumbers: [],
+                waitingCount: 0
+            };
+        }
+
+        const upcoming = await this.queueModel
+            .find({ status: 'waiting' })
+            .sort({ number: 1 })
+            .limit(5);
+
+        return {
+            currentNumber: current.number,
+            nextNumbers: upcoming.map(x => x.number),
+            waitingCount: await this.queueModel.countDocuments({ status: 'waiting' })
+        };
+    }
 }

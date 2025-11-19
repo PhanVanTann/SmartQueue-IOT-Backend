@@ -1,7 +1,7 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { SerialPort } from 'serialport';
 import { ReadlineParser } from '@serialport/parser-readline';
-import { QueueService } from '../queue/queue.service'; // import QueueService
+import { QueueService,  } from '../queue/queue.service'; // import QueueService
 
 @Injectable()
 export class ArduinoService implements OnModuleInit {
@@ -36,6 +36,11 @@ export class ArduinoService implements OnModuleInit {
         await this.handleButtonPress('pressed');
       } else if (data === 'RELEASED') {
         await this.handleButtonPress('released');
+      }else if (data === 'PRESSED2') {
+        await this.handleButtonPress('pressed2');
+      }
+      else if (data === 'RELEASED2') {
+        await this.handleButtonPress('released2');
       }
     });
   }
@@ -53,13 +58,30 @@ async handleButtonPress(status: string) {
       console.error('Lỗi khi tạo queue:', err.message);
     }
   }
-  else
+  else if (status === 'released')
   {
     try {
       const result = await this.queueService.createQueue({ source: 'button' });
       console.log('QueueService trả về:', result);
     } catch (err) {
       console.error('Lỗi khi tạo queue:', err.message);
+    }
+  }
+  else if (status === 'pressed2') {
+    try {
+      const result = await this.queueService.callNextNumber();
+      console.log('QueueService trả về:', result);
+    } catch (err) {
+      console.error('Lỗi khi gọi số tiếp theo:', err.message);
+    }
+  }
+  else if (status === 'released2')
+  {
+    try {
+      const result = await this.queueService.callNextNumber();
+      console.log('QueueService trả về:', result);
+    } catch (err) {
+      console.error('Lỗi khi gọi số tiếp theo:', err.message);
     }
   }
   
