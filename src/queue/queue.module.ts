@@ -9,6 +9,7 @@ import { Queue, QueueSchema } from '../queue/schemas/queue.schema';
       MongooseModule.forFeature([{ name: Queue.name, schema: QueueSchema}]),
   ],
   controllers: [QueueController],
-  providers: [QueueService]
+  providers: [QueueService],
+  exports: [QueueService],
 })
 export class QueueModule {}

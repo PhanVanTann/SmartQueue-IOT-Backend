@@ -6,6 +6,7 @@ import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { QueueModule } from './queue/queue.module';
+import { ArduinoModule } from './arduino/arduino.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { QueueModule } from './queue/queue.module';
     UserModule,
     AuthModule,
     QueueModule,
+    ArduinoModule,
   ],  
   controllers: [AppController],
   providers: [AppService],
