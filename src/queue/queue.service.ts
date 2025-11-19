@@ -8,13 +8,18 @@ export class QueueService {
     constructor(@InjectModel(Queue.name) private queueModel: Model<Queue>) {}
 
     async createQueue( createQueueDto: any ){
+        let status = 'waiting';
+        const calling = await this.queueModel.findOne({ status: 'calling' });
+        if (!calling){
+            status = 'calling';
+        }
         const lastQueue = await this.queueModel.findOne().sort({ number: -1 }).exec();
         const nextNumber = lastQueue ? lastQueue.number + 1 : 1;
 
         const newQueue = new this.queueModel({
             number: nextNumber,
             source: createQueueDto.source || 'button',
-            status: 'waiting',
+            status: status,
         });
 
         await newQueue.save();
@@ -66,6 +71,14 @@ export class QueueService {
         const current = await this.queueModel.findOne({ status: 'calling' }).sort({ number: 1 });
 
         if (!current) {
+            const awiting = await this.queueModel.findOne({ status: 'waiting' }).sort({ number: 1 }).lean();
+            if (awiting) {
+                return {
+                    currentNumber: null,
+                    nextNumbers: [awiting.number],
+                    waitingCount: await this.queueModel.countDocuments({ status: 'waiting' })
+                };
+            }
             return {
                 currentNumber: null,
                 nextNumbers: [],
