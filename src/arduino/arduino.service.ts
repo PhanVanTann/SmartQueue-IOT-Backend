@@ -14,7 +14,7 @@ export class ArduinoService implements OnModuleInit {
   onModuleInit() {
     // Khởi tạo cổng Serial
     this.port = new SerialPort({
-      path: 'COM5', // đổi thành cổng Arduino thực tế của bạn
+      path: 'COM3', // đổi thành cổng Arduino thực tế của bạn
       baudRate: 9600,
       autoOpen: false,
     });
@@ -58,15 +58,15 @@ async handleButtonPress(status: string) {
       console.error('Lỗi khi tạo queue:', err.message);
     }
   }
-  else if (status === 'released')
-  {
-    try {
-      const result = await this.queueService.createQueue({ source: 'button' });
-      console.log('QueueService trả về:', result);
-    } catch (err) {
-      console.error('Lỗi khi tạo queue:', err.message);
-    }
-  }
+  // else if (status === 'released')
+  // {
+  //   try {
+  //     const result = await this.queueService.createQueue({ source: 'button' });
+  //     console.log('QueueService trả về:', result);
+  //   } catch (err) {
+  //     console.error('Lỗi khi tạo queue:', err.message);
+  //   }
+  // }
   else if (status === 'pressed2') {
     try {
       const result = await this.queueService.callNextNumber();
@@ -75,15 +75,15 @@ async handleButtonPress(status: string) {
       console.error('Lỗi khi gọi số tiếp theo:', err.message);
     }
   }
-  else if (status === 'released2')
-  {
-    try {
-      const result = await this.queueService.callNextNumber();
-      console.log('QueueService trả về:', result);
-    } catch (err) {
-      console.error('Lỗi khi gọi số tiếp theo:', err.message);
-    }
-  }
+  // else if (status === 'released2')
+  // {
+  //   try {
+  //     const result = await this.queueService.callNextNumber();
+  //     console.log('QueueService trả về:', result);
+  //   } catch (err) {
+  //     console.error('Lỗi khi gọi số tiếp theo:', err.message);
+  //   }
+  // }
   
 }
 
