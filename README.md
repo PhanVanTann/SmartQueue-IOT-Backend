@@ -31,6 +31,28 @@
 $ npm install
 ```
 
+## Environment variables
+
+Create a `.env` file (see `.env.example`). Common keys:
+
+Required:
+- `MONGO_URL` – MongoDB connection URI
+- `MONGO_DB_NAME` – Database name
+
+Optional:
+- `PORT` – Server port (default 3000)
+- `JWT_SECRET` – Secret for JWT signing (dev default `SECRET_KEY`)
+- `JWT_EXPIRES_IN` – Token TTL (e.g. `1d`, `3600s`)
+- `FRONTEND_ORIGIN` – Comma-separated list of allowed CORS origins (e.g. `http://localhost:3000,http://localhost:5173`). Use `*` only for local dev.
+
+Quick start (PowerShell):
+```powershell
+Copy-Item .env.example .env
+notepad .env   # edit values
+npm install
+npm run start:dev
+```
+
 ## Compile and run the project
 
 ```bash

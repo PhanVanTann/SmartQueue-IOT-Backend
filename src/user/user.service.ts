@@ -39,12 +39,28 @@ export class UserService {
   }
   
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(id: string) {
+    const user = await this.userModel.findById(id).select('-password');
+    if (!user) {
+      throw new UnauthorizedException('User not found');
+    }
+    return { message: 'success', data: user };
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(id: string, updateUserDto: UpdateUserDto) {
+    const user = await this.userModel.findById(id);
+    if (!user) {
+      throw new UnauthorizedException('User not found');
+    }
+    
+    const updateData: any = { ...updateUserDto };
+    if (updateData.password) {
+      const saltRounds = 10;
+      updateData.password = bcrypt.hashSync(updateData.password, saltRounds);
+    }
+    
+    const updated = await this.userModel.findByIdAndUpdate(id, updateData, { new: true }).select('-password');
+    return { message: 'User updated successfully', data: updated };
   }
 
   async remove(id: string) {
