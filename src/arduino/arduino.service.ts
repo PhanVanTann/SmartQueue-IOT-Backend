@@ -17,7 +17,7 @@ export class ArduinoService implements OnModuleInit {
       path: 'COM3', // đổi thành cổng Arduino thực tế của bạn
       baudRate: 9600,
       autoOpen: false,
-    });
+    }); 
 
     this.port.open((err) => {
       if (err) {

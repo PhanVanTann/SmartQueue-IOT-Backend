@@ -7,6 +7,7 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { QueueModule } from './queue/queue.module';
 import { ArduinoModule } from './arduino/arduino.module';
+import { WebsocketModule } from './websocket/websocket.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { ArduinoModule } from './arduino/arduino.module';
     AuthModule,
     QueueModule,
     ArduinoModule,
+    WebsocketModule,
   ],  
   controllers: [AppController],
   providers: [AppService],
